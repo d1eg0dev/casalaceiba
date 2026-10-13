@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Casa La Ceiba — Careyes · Villa privada frente al Pacífico</title>
+<meta name="description" content="Villa minimalista diseñada por Diego Villaseñor en Costa Careyes. 5 suites, 2 recámaras y media room, alberca infinita, tenis y yoga. Hasta 18 huéspedes.">
+<link rel="icon" href="https://casalaceibacareyes.com/storage/2022/12/cropped-Logo-La-Ceiba-32x32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   CASA LA CEIBA · CAREYES — v4 "kinetic pass"
+   Patrones de animación tomados del stack de normalisboring:
+   text-swap chars, botón direccional, clip-path media reveals,
+   líneas alternas en headings, barra de progreso.
+   Paleta del brochure: fondos neutros, café, terracota.
+   ============================================================ */
+:root{
+  --paper:#EFEAE0; --paper2:#E7E1D4; --card:#F6F2E9;
+  --coffee:#4C3E31; --body:#6B5B4B;
+  --terra:#A6522B; --terra2:#C97B4F; --dark:#352A21;
+  --ln:rgba(76,62,49,.16); --ln-inv:rgba(239,234,224,.18);
+  --pad:clamp(20px,4.5vw,72px);
+  --ease:cubic-bezier(.22,1,.36,1);
+  --serif:'Fraunces',serif; --mono:'IBM Plex Mono',monospace; --sans:'Instrument Sans',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--paper);color:var(--body);font-family:var(--sans);font-size:16px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::selection{background:var(--terra);color:var(--paper)}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+:focus-visible{outline:2px solid var(--terra);outline-offset:3px}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:400}
+h1,h2,h3{font-family:var(--serif);font-optical-sizing:auto;font-weight:400;letter-spacing:-.02em;line-height:1.02;color:var(--coffee)}
+em{font-family:var(--serif);font-style:italic;font-weight:380}
+.sec{padding:clamp(90px,11vw,160px) var(--pad)}
+.sec-tag{color:var(--terra);margin-bottom:clamp(26px,4vw,52px)}
+.on-dark{--ln:var(--ln-inv);color:rgba(239,234,224,.8)}
+.on-dark h2,.on-dark h3,.on-dark h4{color:var(--paper)}
+.on-dark .sec-tag{color:var(--terra2)}
+
+/* grano */
+#grain{position:fixed;inset:-50%;z-index:9600;pointer-events:none;opacity:.05;mix-blend-mode:multiply;
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+ animation:grain 8s steps(10) infinite}
+@keyframes grain{0%,100%{transform:translate(0,0)}20%{transform:translate(-4%,3%)}40%{transform:translate(3%,-5%)}60%{transform:translate(-3%,4%)}80%{transform:translate(4%,2%)}}
+
+/* ---------- barra de progreso (patrón header__progress de NIB) ---------- */
+#progress{position:fixed;bottom:0;left:0;width:0;height:2px;background:var(--terra);z-index:950;transition:background .5s}
+body.dark-active #progress{background:var(--terra2)}
+
+/* ---------- cursor ---------- */
+#cur-dot,#cur-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:9998;mix-blend-mode:difference;display:none}
+body.has-cursor{cursor:none}
+body.has-cursor a,body.has-cursor button,body.has-cursor input,body.has-cursor textarea,body.has-cursor label{cursor:none}
+body.has-cursor #cur-dot,body.has-cursor #cur-ring{display:flex}
+#cur-dot{width:8px;height:8px;border-radius:50%;background:#fff;transform:translate(-50%,-50%)}
+#cur-ring{width:36px;height:36px;border-radius:50%;border:1px solid #fff;transform:translate(-50%,-50%);align-items:center;justify-content:center;transition:width .35s var(--ease),height .35s var(--ease),background .35s}
+#cur-ring.big{width:88px;height:88px;background:#fff}
+#cur-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#000;opacity:0;transition:opacity .25s;padding:0 10px;text-align:center}
+#cur-ring.big #cur-label{opacity:1}
+
+/* ---------- preloader ---------- */
+#preloader{position:fixed;inset:0;z-index:9500;background:var(--dark);color:var(--paper);display:flex;align-items:center;justify-content:center}
+.pre-center{text-align:center;font-family:var(--serif);font-size:clamp(40px,7vw,96px);line-height:1.08;letter-spacing:-.02em}
+.pre-line{overflow:hidden;display:block;padding:.04em 0}
+.pre-line em{color:var(--terra2)}
+.pre-foot{position:absolute;left:var(--pad);bottom:var(--pad);color:rgba(239,234,224,.5)}
+.pre-count{position:absolute;right:var(--pad);bottom:var(--pad);font-size:13px;color:var(--paper)}
+
+/* ---------- text-swap links (patrón setLink de NIB) ---------- */
+.swap{position:relative;display:inline-block}
+.swap .swl{position:relative;display:block;overflow:hidden;padding:.1em 0 .04em}
+.swap .swl:nth-of-type(2){position:absolute!important;top:0;left:0;width:100%}
+.swap .swc{display:inline-block;will-change:transform}
+/* fix Safari para chars dentro de <em> (copiado de NIB) */
+em .swc{padding-right:.075em;margin-right:-.055em}
+/* subrayado direccional (patrón .link.under de NIB) */
+.u-link{--uw:100%;--ux:0%;position:relative}
+.u-link::after{content:"";position:absolute;bottom:-.06em;left:var(--ux);width:var(--uw);height:1px;background:currentColor}
+
+/* ---------- botón direccional (patrón setRolloverBtnBg de NIB) ---------- */
+.db{position:relative;overflow:hidden;isolation:isolate;--px:-102%;--py:-102%}
+.db::before{content:"";position:absolute;inset:-1px;z-index:0;transform:translate(var(--px),var(--py));will-change:transform}
+.db>*{position:relative;z-index:1}
+.db .dbl{position:relative;display:block;overflow:clip}
+.db .dbl span{display:block;will-change:transform}
+.db .dbl span:nth-of-type(2){position:absolute;inset:0}
+/* variantes */
+.btn-pill,.btn-solid{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;border-radius:100px;padding:12px 24px;border:1px solid var(--coffee);color:var(--coffee);display:inline-flex}
+.btn-pill::before,.btn-solid::before{background:var(--terra)}
+.btn-pill:hover,.btn-solid:hover{color:var(--paper);border-color:var(--terra)}
+.btn-solid{background:var(--coffee);color:var(--paper);font-size:12px;padding:18px 34px}
+.btn-solid::before{background:var(--terra)}
+.on-dark .btn-pill{color:var(--paper);border-color:var(--paper)}
+.on-dark .btn-pill:hover{border-color:var(--terra2)}
+
+/* ---------- nav ---------- */
+#nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:center;justify-content:space-between;padding:20px var(--pad);color:var(--paper);mix-blend-mode:difference;transition:transform .5s var(--ease)}
+#nav.hidden{transform:translateY(-130%)}
+body.menu-open #nav{mix-blend-mode:normal;color:var(--coffee)}
+.brand{font-family:var(--serif);font-size:21px;letter-spacing:.01em}
+.nav-links{display:flex;gap:clamp(18px,2.4vw,38px)}
+.nav-links a{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.nav-right{display:flex;align-items:center;gap:18px}
+#menuBtn{width:34px;height:26px;position:relative;display:none}
+#menuBtn span{position:absolute;left:4px;right:4px;height:1.5px;background:currentColor;transition:.4s var(--ease)}
+#menuBtn span:first-child{top:8px}#menuBtn span:last-child{bottom:8px}
+body.menu-open #menuBtn span:first-child{top:12px;transform:rotate(45deg)}
+body.menu-open #menuBtn span:last-child{bottom:12.5px;transform:rotate(-45deg)}
+
+/* ---------- menú overlay ---------- */
+#menu{position:fixed;inset:0;z-index:800;background:var(--paper);color:var(--coffee);transform:translateY(-100%);display:flex;flex-direction:column;justify-content:flex-end;padding:0 var(--pad) 38px;visibility:hidden}
+#menu nav{margin-bottom:clamp(28px,5vh,56px)}
+.menu-link{display:flex;align-items:baseline;gap:22px;padding:5px 0}
+.menu-link .idx{font-family:var(--mono);font-size:12px;color:var(--terra)}
+.menu-link .mline{overflow:hidden;display:block;padding:.02em 0}
+.menu-link .mline>span{display:block;font-family:var(--serif);font-size:clamp(36px,7vh,66px);line-height:1.05;letter-spacing:-.02em;color:var(--coffee);will-change:transform}
+.menu-foot{display:flex;justify-content:space-between;gap:20px;border-top:1px solid var(--ln);padding-top:22px;flex-wrap:wrap}
+.menu-foot a:hover{color:var(--terra)}
+
+/* ---------- hero ---------- */
+#hero{min-height:100svh;position:relative;display:flex;flex-direction:column;justify-content:flex-end;padding:110px var(--pad) 0;overflow:hidden}
+.hero-media-wrap{position:absolute;inset:0;z-index:0}
+.hero-media-wrap img,.hero-media-wrap video{width:100%;height:100%;object-fit:cover}
+.hero-media-wrap::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(53,42,33,.66),rgba(53,42,33,.05) 50%),linear-gradient(to bottom,rgba(53,42,33,.4),rgba(53,42,33,0) 24%)}
+.hero-inner{position:relative;z-index:2;color:var(--paper);--ln:rgba(239,234,224,.32)}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;margin-bottom:clamp(16px,3vh,36px)}
+.hero-top .label{color:var(--terra2)}
+.hero-intro{max-width:380px;font-size:15px;color:rgba(239,234,224,.88);text-align:right}
+.hero-intro em{color:var(--paper)}
+.hero-title{font-size:clamp(58px,13.5vw,210px);text-transform:uppercase;color:var(--paper)}
+.hero-title em{text-transform:none;color:var(--paper)}
+.hl{display:block;overflow:hidden;padding:.04em 0}
+.hl2{padding-left:clamp(40px,12vw,230px)}
+.hero-title .swc{will-change:transform}
+.hero-meta{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:16px 0;border-top:1px solid var(--ln);margin-top:clamp(20px,3vh,34px);flex-wrap:wrap}
+.hero-meta .mono{color:rgba(239,234,224,.78)}
+.hero-scroll{display:flex;align-items:center;gap:10px}
+.hero-scroll svg{width:14px;height:14px;animation:bob 1.8s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(5px)}}
+
+/* ---------- marquee ---------- */
+.marquee{overflow:hidden;border-block:1px solid var(--ln);padding:15px 0}
+.mq-track{display:flex;width:max-content;animation:mq 30s linear infinite}
+.mq-group{display:flex;align-items:center;flex:none}
+.mq-group span{font-family:var(--serif);font-size:clamp(20px,2.3vw,30px);letter-spacing:-.01em;padding:0 26px;white-space:nowrap;color:var(--coffee)}
+.mq-group svg{width:14px;height:14px;color:var(--terra);flex:none}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* ---------- manifiesto ---------- */
+#manifiesto .big-text{font-family:var(--serif);font-weight:380;font-size:clamp(26px,3.5vw,50px);line-height:1.28;letter-spacing:-.015em;max-width:1200px;color:var(--coffee)}
+.w{opacity:.14}.w-em{font-style:italic;color:var(--terra)}
+.mani-foot{display:flex;gap:clamp(30px,6vw,90px);margin-top:clamp(50px,7vw,86px);flex-wrap:wrap}
+.stat .num{font-family:var(--serif);font-size:clamp(34px,4vw,56px);line-height:1;color:var(--coffee)}
+.stat .mono{margin-top:8px;color:var(--body)}
+
+/* ---------- media reveals (patrón .media de NIB: clip-path + parallax) ---------- */
+.mreveal{overflow:hidden;background:#DDD5C6;will-change:clip-path}
+.mreveal img{width:100%;height:100%;object-fit:cover;will-change:transform}
+
+/* ---------- capítulos horizontales ---------- */
+#chapters{overflow:hidden;padding:clamp(70px,9vw,120px) 0}
+.ch-head{padding:0 var(--pad);margin-bottom:clamp(36px,5vw,64px);display:flex;justify-content:space-between;align-items:flex-end;gap:26px;flex-wrap:wrap}
+.ch-head h2{font-size:clamp(34px,4.6vw,72px)}
+.ch-head .hint{color:var(--body);max-width:30ch;text-align:right}
+.ch-track{display:flex;gap:clamp(26px,4vw,80px);padding:0 var(--pad);width:max-content;align-items:stretch}
+.ch-panel{width:min(78vw,1020px);flex:none;display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(24px,3vw,48px);align-items:end}
+.ch-intro{width:min(520px,72vw);display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:60px}
+.ch-intro h2{font-size:clamp(38px,4.8vw,74px);margin-bottom:16px}
+.ch-intro p{max-width:32ch}
+.ch-num{font-family:var(--serif);font-size:clamp(58px,6.5vw,100px);line-height:1;color:transparent;-webkit-text-stroke:1px var(--coffee);display:block;margin-bottom:18px}
+.ch-txt h3{font-size:clamp(26px,2.6vw,42px);margin-bottom:14px}
+.ch-txt p{max-width:46ch;margin-bottom:10px}
+.ch-txt .list{margin-top:14px;display:grid;gap:7px;color:var(--body)}
+.ch-txt .list b{color:var(--terra);font-weight:500}
+.ch-media{overflow:hidden}
+.ch-media .mreveal img{height:min(60vh,560px)}
+.ch-cap{display:flex;justify-content:space-between;gap:14px;margin-top:10px;color:var(--body)}
+
+/* ---------- estancias ---------- */
+#rooms .rooms-head{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;flex-wrap:wrap;margin-bottom:clamp(30px,4vw,54px)}
+#rooms .rooms-head h2{font-size:clamp(34px,4.6vw,72px)}
+#rooms .rooms-head p{max-width:36ch}
+.idx-list{border-top:1px solid var(--ln);margin-bottom:clamp(50px,7vw,90px)}
+.idx-row{display:grid;grid-template-columns:64px 1fr auto auto;align-items:center;gap:clamp(14px,3vw,40px);width:100%;text-align:left;padding:clamp(18px,2.4vw,30px) 0;border-bottom:1px solid var(--ln);transition:padding-left .45s var(--ease)}
+.idx-row:hover{padding-left:18px}
+.idx-row .num{color:var(--terra)}
+.idx-row .name{font-family:var(--serif);font-size:clamp(22px,3vw,44px);letter-spacing:-.02em;line-height:1.05;color:var(--coffee)}
+.idx-row .tag{color:var(--body);text-align:right}
+.idx-row .arr{width:32px;height:32px;border:1px solid var(--ln);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:.35s}
+.idx-row:hover .arr{background:var(--coffee);color:var(--paper);border-color:var(--coffee);transform:rotate(45deg)}
+.idx-row .arr svg{width:13px;height:13px}
+#float-img{position:fixed;top:0;left:0;z-index:700;width:min(22vw,320px);aspect-ratio:3/4;overflow:hidden;pointer-events:none;opacity:0;will-change:transform}
+#float-img img{width:100%;height:100%;object-fit:cover}
+.room-card{display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(26px,4vw,70px);padding:clamp(44px,6vw,80px) 0;border-top:1px solid var(--ln)}
+.room-card.alt .room-info{order:2}
+.room-card .rnum{color:var(--terra);display:block;margin-bottom:16px}
+.room-card h3{font-size:clamp(26px,2.8vw,44px);margin-bottom:12px}
+.room-card .meta{color:var(--body);margin-bottom:12px;display:block}
+.room-card .rdesc{max-width:44ch;margin-bottom:14px}
+.room-card .chips{color:rgba(107,91,75,.75)}
+.rg-main{aspect-ratio:4/3}
+.rg-main img{transition:opacity .35s ease}
+.rg-thumbs{display:flex;gap:10px;margin-top:10px}
+.rg-thumbs button{width:86px;aspect-ratio:4/3;overflow:hidden;opacity:.5;transition:opacity .3s,border-color .3s;padding:0;border:1px solid transparent;flex:none}
+.rg-thumbs button.on{opacity:1;border-color:var(--terra)}
+.rg-thumbs img{width:100%;height:100%;object-fit:cover}
+
+/* ---------- servicios ---------- */
+#servicios .big-head{font-size:clamp(38px,5.6vw,86px);max-width:13ch;margin-bottom:clamp(26px,4vw,46px)}
+#servicios .big-head em{color:var(--terra2)}
+#servicios .lead{max-width:54ch;font-size:17px;color:rgba(239,234,224,.75)}
+.svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--ln);border:1px solid var(--ln);margin-top:clamp(36px,5vw,60px)}
+.svc{background:var(--dark);padding:clamp(26px,3vw,44px)}
+.svc h4{font-family:var(--serif);font-size:22px;letter-spacing:-.01em;margin-bottom:16px}
+.svc ul{list-style:none;display:grid;gap:10px;font-size:15px}
+.svc .sub{color:rgba(239,234,224,.55);font-size:13px}
+.amen{display:flex;flex-wrap:wrap;gap:10px;margin-top:clamp(30px,4vw,50px)}
+.amen span{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--ln);border-radius:100px;padding:8px 16px;color:rgba(239,234,224,.75)}
+.rate-bar{display:flex;flex-wrap:wrap;gap:clamp(20px,4vw,60px);justify-content:space-between;align-items:baseline;border-top:1px solid var(--ln);margin-top:clamp(40px,5vw,64px);padding-top:26px}
+.rate-bar .price{font-family:var(--serif);font-size:clamp(28px,3.4vw,50px);color:var(--paper)}
+.rate-bar .mono{color:rgba(239,234,224,.6)}
+
+/* ---------- info ---------- */
+#info .grid2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,2.5vw,36px)}
+.pol{background:var(--card);border:1px solid var(--ln);padding:clamp(26px,3vw,44px)}
+.pol h3{font-size:clamp(22px,2.2vw,32px);margin-bottom:18px}
+.pol ul{list-style:none;display:grid;gap:9px;font-size:15px}
+.pol .season{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--terra);margin:16px 0 6px;display:block}
+.pol li b{color:var(--coffee);font-weight:500}
+
+/* ---------- inquire ---------- */
+#inquire .res-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,100px);align-items:start}
+#inquire .pitch h2{font-size:clamp(36px,4.4vw,68px);margin-bottom:24px}
+#inquire .pitch .lead{max-width:44ch;margin-bottom:30px}
+.inc-list{border-top:1px solid var(--ln)}
+.inc{display:flex;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--ln);font-size:15px}
+.inc svg{width:16px;height:16px;color:var(--terra);flex:none}
+form .field{position:relative;margin-bottom:24px}
+form label{display:block;margin-bottom:8px;color:var(--body)}
+form input,form textarea{width:100%;background:transparent;border:none;border-bottom:1px solid var(--ln);font:inherit;font-size:17px;color:var(--coffee);padding:10px 0;border-radius:0;transition:border-color .3s}
+form textarea{resize:vertical;min-height:70px}
+form input:focus,form textarea:focus{outline:none;border-color:var(--coffee)}
+form .err-msg{position:absolute;left:0;top:100%;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:var(--terra);margin-top:5px;opacity:0;transition:opacity .3s}
+.field.error input{border-color:var(--terra)}
+.field.error .err-msg{opacity:1}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.stepper{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--ln);padding:6px 0}
+.stepper button{width:34px;height:34px;border:1px solid var(--ln);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:.3s}
+.stepper button:hover{background:var(--coffee);color:var(--paper);border-color:var(--coffee)}
+.stepper button svg{width:14px;height:14px}
+.stepper .val{font-family:var(--serif);font-size:22px;color:var(--coffee)}
+.quote{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:18px 0 22px;border-top:1px solid var(--ln);margin-top:6px;flex-wrap:wrap}
+.quote .mono{color:var(--body)}
+
+/* ---------- footer ---------- */
+footer{background:var(--dark);color:var(--paper);--ln:var(--ln-inv)}
+.foot-mq{overflow:hidden;border-block:1px solid var(--ln);padding:10px 0}
+.foot-mq .mq-track{animation-duration:44s}
+.foot-mq span{font-family:var(--serif);font-size:clamp(66px,12vw,190px);line-height:1;letter-spacing:-.02em;color:transparent;-webkit-text-stroke:1px rgba(239,234,224,.65);text-transform:lowercase;padding:0 30px;white-space:nowrap}
+.foot-mq span.fill{color:var(--terra2);-webkit-text-stroke:0}
+.foot-body{padding:clamp(50px,6vw,86px) var(--pad) 30px}
+.foot-cta{display:flex;flex-direction:column;gap:10px;margin-bottom:clamp(46px,6vw,80px)}
+.foot-cta .mono{color:rgba(239,234,224,.55)}
+.foot-mail{font-family:var(--serif);font-size:clamp(26px,4.4vw,64px);letter-spacing:-.02em;width:max-content;max-width:100%;color:var(--paper)}
+.foot-cols{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:30px;border-top:1px solid var(--ln);padding-top:32px}
+.foot-cols h5{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(239,234,224,.5);margin-bottom:14px;font-weight:400}
+.foot-cols ul{list-style:none;display:grid;gap:9px;font-size:15px}
+.foot-cols a:hover{color:var(--terra2)}
+.foot-cols address{font-style:normal;color:rgba(239,234,224,.75)}
+.foot-base{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:clamp(38px,5vw,60px);padding-top:20px;border-top:1px solid var(--ln);color:rgba(239,234,224,.5)}
+
+/* ---------- toast ---------- */
+#toast{position:fixed;left:50%;bottom:34px;z-index:9700;transform:translate(-50%,160%);background:var(--dark);color:var(--paper);display:flex;align-items:center;gap:12px;padding:16px 24px;border-radius:100px;transition:transform .6s var(--ease);max-width:90vw}
+#toast.show{transform:translate(-50%,0)}
+#toast svg{width:17px;height:17px;color:var(--terra2);flex:none}
+
+/* ---------- responsive ---------- */
+@media (max-width:899px){
+  .nav-links{display:none}#menuBtn{display:block}
+  .hero-top{flex-direction:column;align-items:flex-start;gap:14px}
+  .hero-intro{text-align:left}
+  .ch-track{flex-direction:column;width:auto;gap:clamp(50px,9vw,70px)}
+  .ch-panel,.ch-intro{width:auto;padding-bottom:0}
+  .ch-panel{grid-template-columns:1fr}
+  .ch-media .mreveal img{height:52vh}
+  .ch-head .hint{text-align:left}
+  .room-card{grid-template-columns:1fr}
+  .room-card.alt .room-info{order:0}
+  .svc-grid{grid-template-columns:1fr}
+  #info .grid2,#inquire .res-grid{grid-template-columns:1fr}
+  .foot-cols{grid-template-columns:1fr 1fr}
+  .idx-row{grid-template-columns:44px 1fr auto}
+  .idx-row .tag{display:none}
+  #float-img{display:none}
+}
+@media (max-width:600px){
+  .f-row{grid-template-columns:1fr}
+  .foot-cols{grid-template-columns:1fr}
+  .mani-foot{gap:26px}
+}
+@media (prefers-reduced-motion:reduce){.mq-track,#grain,.hero-scroll svg{animation:none}}
+</style>
+</head>
+<body>
+
+<div id="grain" aria-hidden="true"></div>
+<div id="progress" aria-hidden="true"></div>
+
+<!-- PRELOADER -->
+<div id="preloader" aria-hidden="true">
+  <div class="pre-center">
+    <span class="pre-line">casa</span>
+    <span class="pre-line"><em>la ceiba</em></span>
+  </div>
+  <p class="pre-foot mono">Costa Careyes — Jalisco, México</p>
+  <p class="pre-count mono"><span id="preNum">0</span> %</p>
+</div>
+
+<!-- CURSOR -->
+<div id="cur-dot" aria-hidden="true"></div>
+<div id="cur-ring" aria-hidden="true"><span id="cur-label"></span></div>
+
+<!-- NAV -->
+<header id="nav">
+  <a class="brand" href="#hero" data-swap>casa la ceiba</a>
+  <nav class="nav-links" aria-label="Principal">
+    <a href="#casa" data-swap>La casa</a>
+    <a href="#chapters" data-swap>Recorrido</a>
+    <a href="#rooms" data-swap>Estancias</a>
+    <a href="#servicios" data-swap>Servicios</a>
+  </nav>
+  <div class="nav-right">
+    <a class="btn-pill db" data-dirbtn data-magnetic href="#inquire">Reservar</a>
+    <button id="menuBtn" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span></button>
+  </div>
+</header>
+
+<!-- MENÚ -->
+<div id="menu" aria-hidden="true">
+  <nav aria-label="Menú completo">
+    <a class="menu-link" href="#casa"><span class="idx mono">01</span><span class="mline"><span>La casa</span></span></a>
+    <a class="menu-link" href="#chapters"><span class="idx mono">02</span><span class="mline"><span>Recorrido</span></span></a>
+    <a class="menu-link" href="#rooms"><span class="idx mono">03</span><span class="mline"><span>Estancias</span></span></a>
+    <a class="menu-link" href="#servicios"><span class="idx mono">04</span><span class="mline"><span>Servicios</span></span></a>
+    <a class="menu-link" href="#inquire"><span class="idx mono">05</span><span class="mline"><span>Reservar</span></span></a>
+  </nav>
+  <div class="menu-foot mono">
+    <a href="mailto:ceibaencareyes@gmail.com" data-swap>ceibaencareyes@gmail.com</a>
+    <a href="tel:+525543524644" data-swap>+52 554 352 4644</a>
+    <a href="https://instagram.com/laceibacareyes" target="_blank" rel="noopener" data-swap>@laceibacareyes ↗</a>
+  </div>
+</div>
+
+<main>
+
+  <!-- ═══════════════════════════════════════════════════
+       HERO · VIDEO
+       VIDEO → assets/video/hero-ceiba.mp4 (CEIBA-VIDEO-WEB.mp4 actual)
+       POSTER → assets/img/hero-poster.jpg
+       ═══════════════════════════════════════════════════ -->
+  <section id="hero">
+    <div class="hero-media-wrap">
+      <img src="assets/img/hero-poster.jpg" alt="Casa La Ceiba frente al Pacífico" id="heroPoster">
+      <video id="heroVideo" src="assets/video/hero-ceiba.mp4" autoplay muted loop playsinline preload="metadata"></video>
+    </div>
+    <div class="hero-inner">
+      <div class="hero-top">
+        <p class="mono label hero-fade">Villa privada · Frente al Pacífico</p>
+        <p class="hero-intro hero-fade">Un refugio minimalista diseñado por <em>Diego Villaseñor</em>, donde la naturaleza es la protagonista.</p>
+      </div>
+      <h1 class="hero-title" id="heroTitle">
+        <span class="hl">Casa</span>
+        <span class="hl hl2"><em>La&nbsp;Ceiba</em></span>
+      </h1>
+      <div class="hero-meta hero-fade">
+        <p class="mono">Costa Careyes · Jalisco — México</p>
+        <p class="mono">18 huéspedes · 8 estancias</p>
+        <p class="mono hero-scroll"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 5v14M5 12l7 7 7-7"/></svg> Desliza</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee" aria-hidden="true">
+    <div class="mq-track">
+      <div class="mq-group">
+        <span>Costa Careyes</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9"/></svg>
+        <span>Diego Villaseñor</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9"/></svg>
+        <span>Alberca infinita</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9"/></svg>
+        <span>Cancha de tenis</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9"/></svg>
+        <span>Estudio de yoga</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9"/></svg>
+      </div>
+      <div class="mq-group">
+        <span>Costa Careyes</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9"/></svg>
+        <span>Diego Villaseñor</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9"/></svg>
+        <span>Alberca infinita</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9"/></svg>
+        <span>Cancha de tenis</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9"/></svg>
+        <span>Estudio de yoga</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- MANIFIESTO -->
+  <section id="casa" class="sec" data-bg="#EFEAE0">
+    <p class="mono sec-tag">01 — La casa</p>
+    <p class="big-text" id="maniText">Un escondite en el Pacífico mexicano donde la naturaleza es la protagonista: líneas suaves, techos altos, grandes patios y una alberca infinita sobre la costa de Careyes, un enclave elegante y exclusivo donde el mar despierta el corazón.</p>
+    <div class="mani-foot">
+      <div class="stat" data-reveal><p class="num"><span data-count="18">0</span></p><p class="mono">Huéspedes máximo</p></div>
+      <div class="stat" data-reveal data-delay=".08"><p class="num"><span data-count="8">0</span></p><p class="mono">Estancias en la villa</p></div>
+      <div class="stat" data-reveal data-delay=".16"><p class="num"><span data-count="32">0</span><sup style="font-size:.4em;color:var(--terra)">°C</sup></p><p class="mono">Promedio anual, noches frescas</p></div>
+    </div>
+  </section>
+
+  <!-- CAPÍTULOS HORIZONTALES -->
+  <section id="chapters" data-bg="#E7E1D4">
+    <div class="ch-head">
+      <h2 data-split>La casa, capítulo a <em>capítulo</em></h2>
+      <p class="mono hint">Sigue bajando — el recorrido avanza en horizontal</p>
+    </div>
+    <div class="ch-track" id="chTrack">
+
+      <div class="ch-panel ch-intro">
+        <p class="mono sec-tag" style="margin-bottom:18px">02 — El recorrido</p>
+        <h2 data-split>Ubicación, vida, mesa y <em>mar</em></h2>
+        <p>Cinco capítulos para conocer la villa antes de llegar: dónde está, cómo se vive, qué se cocina y qué esperar del entorno.</p>
+      </div>
+
+      <div class="ch-panel">
+        <div class="ch-txt">
+          <span class="ch-num">01</span>
+          <h3>Ubicación</h3>
+          <p>Parte de la comunidad internacional de Costa Careyes, entre Manzanillo al sur y Puerto Vallarta al norte. Acceso fácil, privacidad total durante tu estancia.</p>
+          <div class="list mono">
+            <span><b>Manzanillo (ZLO)</b> — 1 h 15 min</span>
+            <span><b>Puerto Vallarta (PVR)</b> — 2 h 30 min</span>
+            <span><b>Manzanillo ciudad</b> — 119 km · <b>Vallarta</b> — 166 km</span>
+          </div>
+          <p class="mono" style="margin-top:14px">Coordinamos todos tus traslados.</p>
+        </div>
+        <div>
+          <div class="ch-media"><div class="mreveal"><img src="assets/img/chapters/01-ubicacion.jpg" alt="Costa de Careyes" data-px loading="lazy"></div></div>
+          <p class="ch-cap mono"><span>Costa Careyes</span><span>Enclave privado</span></p>
+        </div>
+      </div>
+
+      <div class="ch-panel">
+        <div class="ch-txt">
+          <span class="ch-num">02</span>
+          <h3>Áreas vivas</h3>
+          <p>Una de las puestas de sol más bellas de México, con la exclusividad de nuestro servicio. Patios amplios y acogedores frente a la selva.</p>
+          <div class="list mono">
+            <span>Alberca infinita · Hamacas · Camastros · Terraza</span>
+            <span>Cancha de tenis · Estudio de yoga</span>
+            <span>Comedor formal para 14 · 2 mesas de desayuno</span>
+            <span>Comedor exterior para 6 junto a la alberca</span>
+          </div>
+        </div>
+        <div>
+          <div class="ch-media"><div class="mreveal"><img src="assets/img/chapters/02-living.jpg" alt="Terraza y palapa" data-px loading="lazy"></div></div>
+          <p class="ch-cap mono"><span>La terraza</span><span>Sombra y brisa</span></p>
+        </div>
+      </div>
+
+      <div class="ch-panel">
+        <div class="ch-txt">
+          <span class="ch-num">03</span>
+          <h3>Gastronomía</h3>
+          <p>Espacios pensados para la creatividad culinaria, con todo lo necesario para despertar al chef que llevas dentro.</p>
+          <div class="list mono">
+            <span>Cocina integral · Cava de vinos · Nespresso</span>
+            <span>Horno de leña para pizza · Asador</span>
+            <span>Servicio de cocina disponible (meal plan con costo extra)</span>
+          </div>
+          <p class="mono" style="margin-top:14px">Pregúntanos por los restaurantes de la zona.</p>
+        </div>
+        <div>
+          <div class="ch-media"><div class="mreveal"><img src="assets/img/chapters/03-gastro.jpg" alt="Comedor formal" data-px loading="lazy"></div></div>
+          <p class="ch-cap mono"><span>Comedor formal</span><span>14 comensales</span></p>
+        </div>
+      </div>
+
+      <div class="ch-panel">
+        <div class="ch-txt">
+          <span class="ch-num">04</span>
+          <h3>Playas</h3>
+          <p>La villa está rodeada de playas para vivir el día completo junto al mar.</p>
+          <div class="list mono">
+            <span><b>Rosa Beach Club</b> — 8 min en auto, frente al mar</span>
+            <span><b>Playa Punta Perula</b> — 25 km</span>
+            <span><b>Playa El Tecuan</b> — 33 km</span>
+            <span><b>Playa Punta Peñitas</b> — 107 km</span>
+          </div>
+          <p class="mono" style="margin-top:14px">Perfectas para comer, cenar o solo tomar algo.</p>
+        </div>
+        <div>
+          <div class="ch-media"><div class="mreveal"><img src="assets/img/chapters/04-playas.jpg" alt="Copa de Sol, Careyes" data-px loading="lazy"></div></div>
+          <p class="ch-cap mono"><span>Copa de Sol</span><span>Símbolo de Careyes</span></p>
+        </div>
+      </div>
+
+      <div class="ch-panel">
+        <div class="ch-txt">
+          <span class="ch-num">05</span>
+          <h3>Careyes</h3>
+          <p>En la comunidad internacional es posible contratar profesionales para todo tipo de actividades al aire libre.</p>
+          <div class="list mono">
+            <span>Observación de fauna · Excursiones guiadas</span>
+            <span>Copa de Sol · Careyes Polo Club (sujeto a disponibilidad)</span>
+            <span>Paseo de los Artesanos · Careyes Club &amp; Residences</span>
+            <span>Gastronomía en Pueblo 25 (reservar con anticipación)</span>
+          </div>
+          <p class="mono" style="margin-top:14px">Algunas actividades tienen costo adicional.</p>
+        </div>
+        <div>
+          <div class="ch-media"><div class="mreveal"><img src="assets/img/chapters/05-careyes.jpg" alt="Lounge frente al mar" data-px loading="lazy"></div></div>
+          <p class="ch-cap mono"><span>Club de playa</span><span>Costa Alegre</span></p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ESTANCIAS -->
+  <section id="rooms" class="sec" data-bg="#EFEAE0" style="padding-top:clamp(70px,9vw,120px)">
+    <div class="rooms-head">
+      <div>
+        <p class="mono sec-tag" style="margin-bottom:18px">03 — Las estancias</p>
+        <h2 data-split>Cinco suites, dos recámaras y un <em>media room</em></h2>
+      </div>
+      <p data-reveal>Todas con aire acondicionado, ventilador de techo, WiFi de alta velocidad y closets. Pasa el cursor por el índice para asomarte; cada estancia tiene su propia mini-galería.</p>
+    </div>
+    <div class="idx-list" id="roomsIndex"></div>
+    <div id="roomsGrid"></div>
+  </section>
+
+  <div id="float-img" aria-hidden="true"><img src="" alt=""></div>
+
+  <!-- SERVICIOS -->
+  <section id="servicios" class="sec on-dark" data-bg="#352A21">
+    <p class="mono sec-tag">04 — Servicios</p>
+    <h2 class="big-head" data-split>La casa trabaja en <em>silencio.</em></h2>
+    <p class="lead lines-reveal" data-reveal>Personal profesional y discreto a tu servicio para que tu estancia sea una experiencia que nunca olvidarás.</p>
+    <div class="svc-grid">
+      <div class="svc" data-reveal>
+        <h4>Incluido</h4>
+        <ul>
+          <li>Limpieza diaria de la villa</li>
+          <li class="sub">7:00 am — hora de la cena</li>
+          <li>Mayordomo (butler)</li>
+          <li>Servicios de cocina</li>
+          <li class="sub">Meal plan con costo extra</li>
+          <li>Jardinero</li>
+        </ul>
+      </div>
+      <div class="svc" data-reveal>
+        <h4>Bajo pedido <span class="mono" style="color:var(--terra2)">(reservar con anticipación)</span></h4>
+        <ul>
+          <li>Pre-stocking de la villa</li>
+          <li>Actividades y excursiones</li>
+          <li>Servicio de lavandería</li>
+          <li>Servicio de chef</li>
+          <li>Traslados desde aeropuerto</li>
+        </ul>
+      </div>
+    </div>
+    <div class="amen" data-reveal>
+      <span>Cocina integral</span><span>Cava de vinos</span><span>Nespresso</span><span>Comedor para 14</span><span>2 mesas de desayuno</span><span>Media room</span><span>TV de cable</span><span>Sonido envolvente</span><span>Wet bar</span><span>A/C</span><span>Ventiladores</span><span>Lavadora / Secadora</span><span>Plancha</span><span>WiFi</span>
+    </div>
+    <div class="rate-bar">
+      <p class="price">Tarifa <em style="color:var(--terra2)">a consulta</em></p>
+      <p class="mono">Renta completa de la villa · hasta 18 huéspedes</p>
+      <a class="btn-pill db" data-dirbtn data-magnetic href="#inquire">Consultar fechas</a>
+    </div>
+  </section>
+
+  <!-- INFORMACIÓN -->
+  <section id="info" class="sec" data-bg="#E7E1D4">
+    <p class="mono sec-tag">05 — Información de la estancia</p>
+    <h2 data-split style="font-size:clamp(32px,4vw,60px);margin-bottom:clamp(30px,4vw,50px)">Todo claro, antes de <em>llegar</em></h2>
+    <div class="grid2">
+      <div class="pol" data-reveal>
+        <h3>La estancia</h3>
+        <ul>
+          <li><b>Check-in:</b> 3:00 pm · <b>Check-out:</b> 11:00 am</li>
+          <li>Ocupación máxima: <b>18 huéspedes</b></li>
+          <li>Estancia mínima: <b>3 noches</b> (existen excepciones)</li>
+          <li>Mínimo de <b>8 noches</b> del 20 dic al 10 ene</li>
+          <li>Todos los niños son bienvenidos</li>
+          <li>No se permiten mascotas</li>
+          <li>No fumar en el interior de las habitaciones</li>
+          <li>Puede requerirse depósito de seguridad</li>
+          <li style="font-size:13px;color:var(--body)">Clima soleado, 32 °C promedio anual con noches y amaneceres frescos. Selva seca, pinos y encinos en las montañas.</li>
+        </ul>
+      </div>
+      <div class="pol" data-reveal data-delay=".08">
+        <h3>Política de cancelación</h3>
+        <span class="season">Temporada baja</span>
+        <ul>
+          <li>30+ días antes de la llegada — <b>100% de reembolso</b></li>
+          <li>29 a 10 días antes — <b>50% de reembolso</b></li>
+          <li>Menos de 10 días — <b>no reembolsable</b></li>
+        </ul>
+        <span class="season">Temporada alta</span>
+        <ul>
+          <li>60+ días antes de la llegada — <b>100% de reembolso</b></li>
+          <li>59 a 30 días antes — <b>50% de reembolso</b></li>
+          <li>Menos de 30 días — <b>no reembolsable</b></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- INQUIRE -->
+  <section id="inquire" class="sec" data-bg="#EFEAE0">
+    <div class="res-grid">
+      <div class="pitch">
+        <p class="mono sec-tag">06 — Reserva</p>
+        <h2 data-split>Tu escondite te está <em>esperando</em></h2>
+        <p class="lead lines-reveal" data-reveal>Cuéntanos tus fechas y tu grupo; te respondemos con una propuesta personalizada en menos de 24 horas.</p>
+        <div class="inc-list" data-reveal>
+          <div class="inc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12l5 5L20 7"/></svg> Renta exclusiva de toda la villa</div>
+          <div class="inc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12l5 5L20 7"/></svg> Mayordomo y limpieza diaria incluidos</div>
+          <div class="inc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12l5 5L20 7"/></svg> Traslados y experiencias coordinadas</div>
+        </div>
+      </div>
+      <form id="inquireForm" novalidate>
+        <div class="f-row">
+          <div class="field"><label for="fName" class="mono">Nombre</label><input id="fName" name="nombre" type="text" autocomplete="name" required><span class="err-msg">Escribe tu nombre</span></div>
+          <div class="field"><label for="fMail" class="mono">Correo</label><input id="fMail" name="email" type="email" autocomplete="email" required><span class="err-msg">Correo no válido</span></div>
+        </div>
+        <div class="f-row">
+          <div class="field"><label for="fIn" class="mono">Llegada</label><input id="fIn" name="llegada" type="date" required><span class="err-msg">Selecciona una fecha</span></div>
+          <div class="field"><label for="fOut" class="mono">Salida</label><input id="fOut" name="salida" type="date" required><span class="err-msg">Selecciona una fecha</span></div>
+        </div>
+        <div class="f-row">
+          <div class="field">
+            <p class="mono" style="margin-bottom:8px;color:var(--body)">Huéspedes (máx. 18)</p>
+            <div class="stepper">
+              <button type="button" data-step="guests" data-d="-1" aria-label="Menos huéspedes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg></button>
+              <span class="val" id="gVal">8</span>
+              <button type="button" data-step="guests" data-d="1" aria-label="Más huéspedes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+            </div>
+          </div>
+          <div class="field">
+            <p class="mono" style="margin-bottom:8px;color:var(--body)">Recámaras (4–7)</p>
+            <div class="stepper">
+              <button type="button" data-step="rooms" data-d="-1" aria-label="Menos recámaras"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg></button>
+              <span class="val" id="rVal">4</span>
+              <button type="button" data-step="rooms" data-d="1" aria-label="Más recámaras"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button>
+            </div>
+          </div>
+        </div>
+        <div class="field"><label for="fMsg" class="mono">Mensaje</label><textarea id="fMsg" name="mensaje" placeholder="Ocasión, preferencias, algo que debamos saber…"></textarea></div>
+        <div class="quote">
+          <p class="mono">Cotización personalizada — sin compromiso</p>
+          <p class="mono">Respuesta &lt; 24 h</p>
+        </div>
+        <button class="btn-solid db" type="submit" data-dirbtn data-magnetic>Solicitar disponibilidad</button>
+        <p class="mono" style="margin-top:18px;color:var(--body)">O directo con Fernando: <a class="u-link" href="https://wa.me/525543524644">WhatsApp +52 554 352 4644</a></p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer data-bg="#352A21">
+  <div class="foot-mq" aria-hidden="true">
+    <div class="mq-track">
+      <div class="mq-group"><span>casa</span><span class="fill">la ceiba</span><span>careyes</span><span class="fill">costa alegre</span></div>
+      <div class="mq-group"><span>casa</span><span class="fill">la ceiba</span><span>careyes</span><span class="fill">costa alegre</span></div>
+    </div>
+  </div>
+  <div class="foot-body">
+    <div class="foot-cta">
+      <p class="mono">Reservas &amp; concierge — Fernando Barnetche</p>
+      <a class="foot-mail" href="mailto:ceibaencareyes@gmail.com" data-swap>ceibaencareyes@gmail.com</a>
+    </div>
+    <div class="foot-cols">
+      <div>
+        <h5>La Ceiba</h5>
+        <address>Villa privada frente al Pacífico.<br>Diseñada por Diego Villaseñor.<br>Costa Careyes, Jalisco — México</address>
+      </div>
+      <div>
+        <h5>Explora</h5>
+        <ul>
+          <li><a href="#casa" data-swap>La casa</a></li>
+          <li><a href="#chapters" data-swap>Recorrido</a></li>
+          <li><a href="#rooms" data-swap>Estancias</a></li>
+          <li><a href="#servicios" data-swap>Servicios</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Contacto</h5>
+        <ul>
+          <li><a href="tel:+525543524644" data-swap>+52 554 352 4644</a></li>
+          <li><a href="tel:+12814678431" data-swap>+1 281 467 8431</a></li>
+          <li><a href="mailto:ceibaencareyes@gmail.com" data-swap>ceibaencareyes@gmail.com</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Síguenos</h5>
+        <ul>
+          <li><a href="https://instagram.com/laceibacareyes" target="_blank" rel="noopener" data-swap>Instagram ↗</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-base mono">
+      <p>© <span id="year"></span> Casa La Ceiba · Careyes</p>
+      <p>@laceibacareyes</p>
+    </div>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div id="toast" role="status" aria-live="polite">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12l5 5L20 7"/></svg>
+  <span id="toastMsg">Gracias — te contactamos en menos de 24 horas.</span>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+<script src="https://unpkg.com/lenis@1.3.4/dist/lenis.min.js"></script>
+<script>
+(function(){
+"use strict";
+const q=s=>document.querySelector(s), qa=s=>[...document.querySelectorAll(s)];
+const G=window.gsap, ST=window.ScrollTrigger, SPLIT=window.SplitText;
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const ANIM=!!G&&!RM, HAS_SPLIT=ANIM&&!!SPLIT;
+if(ANIM&&ST)G.registerPlugin(ST);
+q('#year').textContent=new Date().getFullYear();
+const isMobile=()=>matchMedia('(max-width:899px)').matches;
+
+/* ── ESTANCIAS · EDITAR nombres, metas, descripciones y fotos ── */
+const ROOMS=[
+ {name:'Master Suite I',meta:'Terraza privada · Vista frontal al Pacífico',desc:'El mar desde la cama: terraza propia con vistas frontales al océano Pacífico.',photos:['assets/img/rooms/master-1-a.jpg','assets/img/rooms/master-1-b.jpg','assets/img/rooms/master-1-c.jpg']},
+ {name:'Master Suite II',meta:'Terraza privada · Vista frontal al Pacífico',desc:'La segunda master, con la misma puesta de sol desde su terraza privada.',photos:['assets/img/rooms/master-2-a.jpg','assets/img/rooms/master-2-b.jpg','assets/img/rooms/master-2-c.jpg']},
+ {name:'La Huerta Suite',meta:'Ducha exterior · Terraza con vista al mar',desc:'Baño interior completo más ducha exterior privada, un espacio de relax rodeado de naturaleza.',photos:['assets/img/rooms/huerta-a.jpg','assets/img/rooms/huerta-b.jpg','assets/img/rooms/huerta-c.jpg']},
+ {name:'Suite IV',meta:'A/C · Ventilador · Vestidor',desc:'Luminosa y fresca, pensada para el descanso profundo.',photos:['assets/img/rooms/suite-4-a.jpg','assets/img/rooms/suite-4-b.jpg','assets/img/rooms/suite-4-c.jpg']},
+ {name:'Suite V',meta:'A/C · Ventilador · Vestidor',desc:'Serenidad entre la vegetación, a pasos de la alberca infinita.',photos:['assets/img/rooms/suite-5-a.jpg','assets/img/rooms/suite-5-b.jpg','assets/img/rooms/suite-5-c.jpg']},
+ {name:'Recámara I',meta:'Baño completo · Ducha exterior',desc:'Una de las dos recámaras con baño interior y ducha exterior privada.',photos:['assets/img/rooms/bedroom-1-a.jpg','assets/img/rooms/bedroom-1-b.jpg','assets/img/rooms/bedroom-1-c.jpg']},
+ {name:'Recámara II',meta:'Baño completo · Ducha exterior',desc:'Su gemela, ideal para niños o segundas parejas en el mismo viaje.',photos:['assets/img/rooms/bedroom-2-a.jpg','assets/img/rooms/bedroom-2-b.jpg','assets/img/rooms/bedroom-2-c.jpg']},
+ {name:'Media Room',meta:'Medio baño · TV de cable · Surround',desc:'Sala multimedia con televisión por cable, sonido envolvente e internet inalámbrico.',photos:['assets/img/rooms/media-a.jpg','assets/img/rooms/media-b.jpg','assets/img/rooms/media-c.jpg']}
+];
+const CHIPS='A/C · Ventilador · WiFi · Bluetooth · Closet';
+const grid=q('#roomsGrid'), idx=q('#roomsIndex');
+grid.innerHTML=ROOMS.map((r,i)=>`
+ <article class="room-card${i%2?' alt':''}" id="room-${i}">
+  <div class="room-info">
+   <span class="mono rnum">${String(i+1).padStart(2,'0')}</span>
+   <h3>${r.name}</h3><span class="meta mono">${r.meta}</span>
+   <p class="rdesc">${r.desc}</p><p class="chips mono">${CHIPS}</p>
+  </div>
+  <div class="room-gal">
+   <div class="mreveal rg-main"><img src="${r.photos[0]}" alt="${r.name}" data-px loading="lazy"></div>
+   <div class="rg-thumbs">${r.photos.map((p,j)=>`<button type="button" class="${j?'':'on'}" data-src="${p}" aria-label="Foto ${j+1} de ${r.name}"><img src="${p}" alt="" loading="lazy"></button>`).join('')}</div>
+  </div>
+ </article>`).join('');
+idx.innerHTML=ROOMS.map((r,i)=>`
+ <button class="idx-row" data-img="${r.photos[0]}">
+  <span class="mono num">${String(i+1).padStart(2,'0')}</span>
+  <span class="name">${r.name}</span><span class="tag mono">${r.meta}</span>
+  <span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+ </button>`).join('');
+
+/* mini-galería por estancia */
+grid.addEventListener('click',e=>{
+  const b=e.target.closest('.rg-thumbs button'); if(!b) return;
+  const gal=b.closest('.room-gal'), main=gal.querySelector('.rg-main img');
+  gal.querySelectorAll('.rg-thumbs button').forEach(x=>x.classList.toggle('on',x===b));
+  main.style.opacity='0';
+  const pre=new Image(); pre.src=b.dataset.src;
+  const swap=()=>{main.src=b.dataset.src;requestAnimationFrame(()=>main.style.opacity='1');};
+  pre.complete?swap():pre.onload=swap;
+});
+idx.addEventListener('click',e=>{
+  const row=e.target.closest('.idx-row'); if(!row) return;
+  const card=grid.children[[...idx.children].indexOf(row)];
+  if(lenis) lenis.scrollTo(card,{offset:-30,duration:1.4}); else card.scrollIntoView({behavior:'smooth'});
+});
+
+/* ── fallbacks de imagen ── */
+function fb(im){ if(im.dataset.fb) return; im.dataset.fb=1;
+  const seed=(im.getAttribute('src')||'ceiba').split('/').pop().replace(/\.\w+$/,'');
+  im.src=`https://picsum.photos/seed/${seed}/1200/900.jpg`; }
+qa('img').forEach(im=>im.addEventListener('error',()=>fb(im)));
+
+/* ── video fallback ── */
+const vid=q('#heroVideo');
+if(vid){ vid.addEventListener('error',()=>vid.style.display='none');
+  const p=vid.play(); if(p&&p.catch)p.catch(()=>{}); }
+
+/* ── Lenis ── */
+let lenis=null;
+if(ANIM&&window.Lenis){
+  lenis=new Lenis({duration:1.15,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t))});
+  lenis.on('scroll',()=>{ST&&ST.update();onScrollNav(lenis.scroll);});
+  G.ticker.add(t=>lenis.raf(t*1000)); G.ticker.lagSmoothing(0);
+}else{ addEventListener('scroll',()=>onScrollNav(scrollY),{passive:true}); }
+
+/* ════════════════════════════════════════════════════════════
+   TEXT-SWAP POR CARACTERES — patrón setLink() de normalisboring
+   Duplica el texto en dos líneas enmascaradas; al hover, la
+   primera sube y la segunda entra desde abajo, char por char
+   (stagger .025, power2.inOut). El <em> se preserva.
+   ════════════════════════════════════════════════════════════ */
+function initSwapLinks(){
+  if(!HAS_SPLIT) return;
+  qa('[data-swap]').forEach(el=>{
+    if(el.dataset.swapDone) return; el.dataset.swapDone=1;
+    const html=el.innerHTML;
+    el.classList.add('swap');
+    el.innerHTML=`<span class="swl"><span class="sw-in">${html}</span></span><span class="swl"><span class="sw-in">${html}</span></span>`;
+    let chars1=[],chars2=[];
+    el.querySelectorAll('.sw-in').forEach((inner,i)=>{
+      const sp=new SplitText(inner,{type:'chars',charsClass:'swc'});
+      (i?chars2:chars1)=sp.chars;
+    });
+    // chars1/chars2 asignados por closure: reasignar correctamente
+    const all=el.querySelectorAll('.swl');
+    const c1=all[0].querySelectorAll('.swc'), c2=all[1].querySelectorAll('.swc');
+    G.set(c2,{yPercent:110});
+    let over=false;
+    el.addEventListener('mouseenter',()=>{
+      if(over) return; over=true;
+      G.killTweensOf([c1,c2]);
+      G.to(c2,{yPercent:0,duration:.5,ease:'power2.inOut',stagger:.025});
+      G.to(c1,{yPercent:-110,duration:.5,delay:.025,ease:'power2.inOut',stagger:.025});
+    });
+    el.addEventListener('mouseleave',()=>{
+      if(!over) return; over=false;
+      G.killTweensOf([c1,c2]);
+      G.to(c1,{yPercent:0,duration:.5,ease:'power2.inOut',stagger:.025});
+      G.to(c2,{yPercent:110,duration:.5,delay:.025,ease:'power2.inOut',stagger:.025});
+    });
+  });
+}
+
+/* ── subrayado direccional (patrón .link.under de NIB) ── */
+function initULinks(){
+  qa('.u-link').forEach(el=>{
+    el.style.setProperty('--uw','100%');
+    el.addEventListener('mouseenter',()=>{
+      G.killTweensOf(el);
+      G.set(el,{'--uw':'100%','--ux':'0%'});
+      G.to(el,{'--uw':'0%','--ux':'100%',duration:.33,ease:'power2.inOut'});
+      G.set(el,{'--uw':'0%','--ux':'0%',delay:.33});
+      G.to(el,{'--uw':'100%','--ux':'0%',duration:.33,ease:'power2.inOut',delay:.33});
+    });
+    el.addEventListener('mouseleave',()=>{
+      G.killTweensOf(el);
+      G.set(el,{'--uw':'100%','--ux':'0%'});
+      G.to(el,{'--uw':'0%','--ux':'0%',duration:.33,ease:'power2.inOut'});
+      G.set(el,{'--uw':'100%','--ux':'100%',delay:.33});
+      G.to(el,{'--uw':'100%','--ux':'0%',duration:.33,ease:'power2.inOut',delay:.33});
+    });
+  });
+}
+
+/* ════════════════════════════════════════════════════════════
+   BOTÓN DIRECCIONAL — patrón setRolloverBtnBg() de NIB
+   El fill (terracota) entra desde el borde más cercano al
+   cursor; el label sale hacia el lado opuesto y entra su
+   duplicado. Al salir, invierte según el lado de salida.
+   ════════════════════════════════════════════════════════════ */
+function initDirButtons(){
+  if(!ANIM) return;
+  qa('[data-dirbtn]').forEach(el=>{
+    if(el.dataset.dirDone) return; el.dataset.dirDone=1;
+    const label=el.textContent.trim();
+    el.innerHTML=`<span class="dbl"><span>${label}</span><span>${label}</span></span>`;
+    const s1=el.querySelectorAll('.dbl span')[0], s2=el.querySelectorAll('.dbl span')[1];
+    G.set(s2,{yPercent:110});
+    const dur=.33, dur2=.25;
+    function side(e){
+      const r=el.getBoundingClientRect();
+      const d={left:e.clientX-r.left,right:r.right-e.clientX,top:e.clientY-r.top,bottom:r.bottom-e.clientY};
+      const min=Math.min(d.left,d.right,d.top,d.bottom);
+      if(min===d.left)  return {axis:'x', posIn:['-102%','102%'], posOut:['102%','-102%']};
+      if(min===d.right) return {axis:'x', posIn:['102%','-102%'], posOut:['-102%','102%']};
+      if(min===d.top)   return {axis:'y', posIn:['-102%','102%'], posOut:['102%','-102%']};
+      return               {axis:'y', posIn:['102%','-102%'], posOut:['-102%','102%']};
+    }
+    function animLabel(exit,inp){
+      /* exit: [salida, entrada]; mueve s1 fuera y s2 entra (o viceversa) */
+      G.killTweensOf([s1,s2]);
+      G.fromTo(s1,{yPercent:exit[0]},{yPercent:exit[1],duration:dur,ease:'power3.in'});
+      G.fromTo(s2,{yPercent:inp[0]},{yPercent:inp[1],duration:dur,delay:dur2,ease:'power3.out'});
+    }
+    el.addEventListener('mouseenter',e=>{
+      const s=side(e);
+      G.killTweensOf(el);
+      G.fromTo(el,{'--px':s.posIn[0],'--py':s.axis==='y'?s.posIn[0]:'0%'},
+                  {'--px':'0%','--py':'0%',duration:dur2,delay:.1,ease:'power3.in'});
+      if(s.axis==='x'){
+        G.killTweensOf(el); G.fromTo(el,{'--px':s.posIn[0]},{'--px':'0%',duration:dur2,delay:.1,ease:'power3.in'});
+        G.fromTo(s1,{xPercent:0},{xPercent:200,duration:dur,ease:'power3.in',
+          onComplete:()=>G.set(s1,{xPercent:-200})});
+        G.fromTo(s2,{xPercent:-200},{xPercent:0,duration:dur,delay:dur2,ease:'power3.out'});
+        G.set([s1,s2],{yPercent:0});
+      }else{
+        G.fromTo(el,{'--py':s.posIn[0]},{'--py':'0%',duration:dur2,delay:.1,ease:'power3.in'});
+        animLabel([0,-110],[110,0]);
+        G.set([s1,s2],{xPercent:0});
+      }
+    });
+    el.addEventListener('mouseleave',e=>{
+      const s=side(e);
+      if(s.axis==='x'){
+        G.fromTo(el,{'--px':'0%'},{'--px':s.posOut[0],duration:dur2,delay:.1,ease:'power3.in'});
+        G.fromTo(s1,{xPercent:0},{xPercent:-200,duration:dur,ease:'power3.in',
+          onComplete:()=>G.set(s1,{xPercent:0})});
+        G.fromTo(s2,{xPercent:200},{xPercent:0,duration:dur,delay:dur2,ease:'power3.out'});
+      }else{
+        G.fromTo(el,{'--py':'0%'},{'--py':s.posOut[0],duration:dur2,delay:.1,ease:'power3.in'});
+        G.fromTo(s1,{yPercent:0},{yPercent:110,duration:dur,ease:'power3.in',
+          onComplete:()=>G.set(s1,{yPercent:0})});
+        G.fromTo(s2,{yPercent:-110},{yPercent:0,duration:dur,delay:dur2,ease:'power3.out'});
+      }
+    });
+  });
+}
+
+/* ════════════════════════════════════════════════════════════
+   HEADINGS: líneas alternando dirección por chars (anim-line NIB)
+   posInit = (ind%2) ? '-110%' : '110%' — con máscara por línea.
+   ════════════════════════════════════════════════════════════ */
+function initHeadings(){
+  if(!HAS_SPLIT) return;
+  qa('[data-split]').forEach(el=>{
+    if(el.dataset.splitDone) return; el.dataset.splitDone=1;
+    const sp=new SplitText(el,{type:'lines,chars',charsClass:'swc',mask:'lines'});
+    const tl=G.timeline({paused:true,
+      scrollTrigger:ST?{trigger:el,start:'top 82%'}:null});
+    sp.lines.forEach((line,i)=>{
+      const chars=line.querySelectorAll('.swc');
+      const posInit=(i%2!==0)?'-110%':'110%';
+      tl.from(chars,{yPercent:posInit==='110%'?110:-110,duration:.75,stagger:.035,ease:'power3.out'},i?.35:0);
+    });
+    if(!ST) tl.play();
+  });
+}
+
+/* ════════════════════════════════════════════════════════════
+   MEDIA REVEALS — patrón .media de NIB: clip-path que se abre
+   + parallax interno de la imagen (scrub), como su --clipPath.
+   ════════════════════════════════════════════════════════════ */
+function initMediaReveals(){
+  if(!ANIM) return;
+  qa('.mreveal').forEach(el=>{
+    const img=el.querySelector('img');
+    const show=G.timeline({paused:true});
+    show.fromTo(el,{clipPath:'inset(100% 0% 0% 0%)'},{clipPath:'inset(0% 0% 0% 0%)',duration:1.2,ease:'power3.inOut'},0);
+    if(img&&!img.dataset.px) show.from(img,{yPercent:18,scale:1.1,duration:1.6,ease:'power3.out'},0);
+    ST.create({animation:show,trigger:el,start:'top 88%'}); // once por defecto al entrar
+  });
+  /* parallax scrub en imgs marcadas */
+  qa('[data-px]').forEach(img=>{
+    G.fromTo(img,{yPercent:-8},{yPercent:8,ease:'none',
+      scrollTrigger:{trigger:img.closest('.mreveal')||img,start:'top bottom',end:'bottom top',scrub:.5}});
+  });
+}
+
+/* ── párrafos por líneas enmascaradas (patrón anim-line NIB) ── */
+function initLineReveals(){
+  if(!HAS_SPLIT) return;
+  qa('.lines-reveal').forEach(el=>{
+    if(el.dataset.lr) return; el.dataset.lr=1;
+    const sp=new SplitText(el,{type:'lines',mask:'lines'});
+    const tl=G.timeline({paused:true,
+      scrollTrigger:ST?{trigger:el,start:'top 85%'}:null});
+    tl.from(sp.lines,{yPercent:110,duration:.6,stagger:.09,ease:'power3.out'});
+    if(!ST) tl.play();
+  });
+}
+
+/* ── cursor ── */
+if(matchMedia('(pointer:fine)').matches&&ANIM){
+  document.body.classList.add('has-cursor');
+  const dot=q('#cur-dot'),ring=q('#cur-ring'),label=q('#cur-label');
+  const dx=G.quickTo(dot,'x',{duration:.08}),dy=G.quickTo(dot,'y',{duration:.08});
+  const rx=G.quickTo(ring,'x',{duration:.35,ease:'power3'}),ry=G.quickTo(ring,'y',{duration:.35,ease:'power3'});
+  addEventListener('mousemove',e=>{dx(e.clientX);dy(e.clientY);rx(e.clientX);ry(e.clientY);});
+  qa('a,button').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{ring.classList.add('big');label.textContent=el.dataset.cursor||'';});
+    el.addEventListener('mouseleave',()=>ring.classList.remove('big'));
+  });
+}
+/* ── magnetic ── */
+if(matchMedia('(pointer:fine)').matches&&ANIM){
+  qa('[data-magnetic]').forEach(el=>{
+    el.addEventListener('mousemove',e=>{const r=el.getBoundingClientRect();
+      G.to(el,{x:(e.clientX-r.left-r.width/2)*.3,y:(e.clientY-r.top-r.height/2)*.3,duration:.4});});
+    el.addEventListener('mouseleave',()=>G.to(el,{x:0,y:0,duration:.6,ease:'elastic.out(1,.5)'}));
+  });
+}
+/* ── nav hide ── */
+let lastY=0;
+function onScrollNav(y){
+  const nav=q('#nav'); if(!nav) return;
+  if(y>140&&y>lastY)nav.classList.add('hidden');else nav.classList.remove('hidden');
+  lastY=y;
+}
+/* ── barra de progreso (header__progress de NIB) ── */
+function initProgress(){
+  const bar=q('#progress');
+  const upd=()=>{
+    const h=document.documentElement.scrollHeight-innerHeight;
+    bar.style.width=(h>0?(scrollY||lenis?.scroll||0)/h*100:0)+'%';
+  };
+  if(ST) ST.create({onUpdate:upd,start:0,end:'max'});
+  else addEventListener('scroll',upd,{passive:true});
+  upd();
+}
+/* ── menú ── */
+const menu=q('#menu'),menuBtn=q('#menuBtn');let menuOpen=false,menuTl=null;
+if(ANIM){
+  const mlines=qa('.menu-link .mline > span');
+  G.set(mlines,{yPercent:115});
+  menuTl=G.timeline({paused:true})
+    .to(menu,{visibility:'visible',yPercent:100,duration:.8,ease:'power4.inOut'},0)
+    .to(mlines,{yPercent:0,duration:.9,ease:'power4.out',stagger:.07},.35)
+    .fromTo(menu.querySelectorAll('.menu-foot'),{opacity:0},{opacity:1,duration:.5},.6);
+}
+function toggleMenu(force){
+  menuOpen=force!==undefined?force:!menuOpen;
+  document.body.classList.toggle('menu-open',menuOpen);
+  menuBtn.setAttribute('aria-expanded',menuOpen);
+  menu.setAttribute('aria-hidden',!menuOpen);
+  if(menuTl){menuOpen?(lenis&&lenis.stop(),menuTl.timeScale(1).play()):(menuTl.timeScale(1.5).reverse(),lenis&&lenis.start());}
+  else{menu.style.visibility=menuOpen?'visible':'hidden';menu.style.transform=menuOpen?'translateY(0)':'translateY(-100%)';}
+}
+menuBtn.addEventListener('click',()=>toggleMenu());
+/* ── anclas ── */
+qa('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const id=a.getAttribute('href'); if(id.length<2) return;
+    e.preventDefault(); if(menuOpen)toggleMenu(false);
+    const t=q(id); if(!t) return;
+    if(lenis)lenis.scrollTo(t,{duration:1.5,easing:x=>1-Math.pow(1-x,4)});
+    else t.scrollIntoView({behavior:'smooth'});
+  });
+});
+/* ── reveals genéricos ── */
+if(ANIM){
+  qa('[data-reveal]').forEach(el=>{
+    const d=parseFloat(el.dataset.delay||0);
+    G.fromTo(el,{opacity:0,y:28},{opacity:1,y:0,duration:1,delay:d,ease:'power3.out',
+      scrollTrigger:ST?{trigger:el,start:'top 86%'}:null,
+      onStart(){ if(!ST) return; }});
+  });
+}
+/* ── manifiesto palabra por palabra (equivale a anim-line-op NIB) ── */
+const man=q('#maniText');
+if(man&&ANIM){
+  const emph=['naturaleza','protagonista','Careyes','alberca','infinita','corazón'];
+  man.innerHTML=man.textContent.trim().split(/\s+/)
+    .map(w=>emph.some(x=>w.replace(/[,:.;—]/g,'').toLowerCase()===x.toLowerCase())?`<span class="w w-em">${w}</span>`:`<span class="w">${w}</span>`).join(' ');
+  if(ST) G.to(man.querySelectorAll('.w'),{opacity:1,ease:'none',stagger:.35,
+    scrollTrigger:{trigger:man,start:'top 80%',end:'bottom 45%',scrub:true}});
+  else G.to(man.querySelectorAll('.w'),{opacity:1,duration:.8,stagger:.03});
+}
+/* ── contadores ── */
+if(ANIM)qa('[data-count]').forEach(el=>{
+  const end=+el.dataset.count,obj={v:0};
+  G.to(obj,{v:end,duration:1.8,ease:'power2.out',
+    scrollTrigger:ST?{trigger:el,start:'top 87%'}:null,
+    onUpdate:()=>el.textContent=Math.round(obj.v)});
+});
+/* ── capítulos horizontales (desktop) ── */
+if(ANIM&&ST){
+  ST.matchMedia?ST.matchMedia().add('(min-width:900px)',()=>{
+    const track=q('#chTrack');
+    const dist=()=>track.scrollWidth-innerWidth;
+    G.to(track,{x:()=>-dist(),ease:'none',
+      scrollTrigger:{trigger:'#chapters',start:'top top',end:()=>'+='+dist(),pin:true,scrub:1,anticipatePin:1,invalidateOnRefresh:true}});
+  }):null;
+}
+/* ── foto flotante ── */
+const fi=q('#float-img'),fim=fi.querySelector('img');
+if(matchMedia('(pointer:fine)').matches){
+  let fx=null,fy=null;
+  if(ANIM){G.set(fi,{xPercent:-50,yPercent:-55});
+    fx=G.quickTo(fi,'x',{duration:.45,ease:'power3'});fy=G.quickTo(fi,'y',{duration:.45,ease:'power3'});}
+  qa('.idx-row').forEach(row=>{
+    row.addEventListener('mouseenter',()=>{fim.src=row.dataset.img;
+      ANIM?G.to(fi,{opacity:1,scale:1,duration:.4}):fi.style.opacity=1;});
+    row.addEventListener('mouseleave',()=>{ANIM?G.to(fi,{opacity:0,scale:.95,duration:.35}):fi.style.opacity=0;});
+  });
+  idx.addEventListener('mousemove',e=>{if(fx){fx(e.clientX);fy(e.clientY);}});
+}
+/* ── fondos que mutan + estado para barra de progreso ── */
+if(ANIM&&ST)qa('[data-bg]').forEach(sec=>{
+  ST.create({trigger:sec,start:'top 55%',end:'bottom 55%',
+    onToggle:s=>{
+      if(!s.isActive) return;
+      G.to('body',{backgroundColor:sec.dataset.bg,duration:.8,ease:'power2.inOut'});
+      document.body.classList.toggle('dark-active',sec.dataset.bg==='#352A21');
+    }});
+});
+/* ── steppers ── */
+const steps={guests:{min:2,max:18,val:8,el:q('#gVal')},rooms:{min:4,max:7,val:4,el:q('#rVal')}};
+qa('[data-step]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const s=steps[btn.dataset.step];
+    s.val=Math.min(s.max,Math.max(s.min,s.val+ +btn.dataset.d));
+    s.el.textContent=s.val;
+    s.el.animate([{transform:'scale(1.15)'},{transform:'scale(1)'}],{duration:220});
+  });
+});
+/* ── toast + formulario ── */
+let toastT=null;
+function toast(msg){const t=q('#toast');q('#toastMsg').textContent=msg;t.classList.add('show');
+  clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),4200);}
+const form=q('#inquireForm');
+form.addEventListener('submit',e=>{
+  e.preventDefault();let ok=true;
+  const check=(id,v)=>{q(id).closest('.field').classList.toggle('error',!v);if(!v)ok=false;};
+  check('#fName',q('#fName').value.trim().length>1);
+  check('#fMail',/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(q('#fMail').value.trim()));
+  check('#fIn',!!q('#fIn').value);check('#fOut',!!q('#fOut').value);
+  if(!ok){toast('Revisa los campos marcados.');return;}
+  /* EDITAR: endpoint real (Formspree u otro) */
+  toast('Gracias — te contactamos en menos de 24 horas.');
+  form.reset();steps.guests.val=8;steps.guests.el.textContent=8;steps.rooms.val=4;steps.rooms.el.textContent=4;
+});
+qa('#inquireForm input').forEach(inp=>inp.addEventListener('input',()=>inp.closest('.field').classList.remove('error')));
+
+/* ════════════════════════════════════════════════════════════
+   PRELOADER + ENTRADA (chars con dirección alterna, estilo NIB)
+   ════════════════════════════════════════════════════════════ */
+const pre=q('#preloader');
+if(ANIM){
+  lenis&&lenis.stop();
+  /* preloader chars */
+  let preChars=[];
+  if(HAS_SPLIT){
+    qa('#preloader .pre-line').forEach(line=>{
+      const sp=new SplitText(line,{type:'chars',charsClass:'swc'});
+      preChars.push(...sp.chars);
+    });
+    G.set(preChars,{yPercent:115});
+  }
+  /* hero: set inicial */
+  G.set('.hero-fade',{opacity:0,y:14});
+  G.set('#nav',{y:-16,opacity:0});
+  G.set('.hero-media-wrap',{opacity:0,scale:1.06});
+  let heroChars=[];
+  if(HAS_SPLIT){
+    qa('#heroTitle .hl').forEach((line,i)=>{
+      const sp=new SplitText(line,{type:'chars',charsClass:'swc'});
+      const dir=(i%2!==0)?-115:115;
+      G.set(sp.chars,{yPercent:dir});
+      heroChars.push(...sp.chars);
+    });
+  }else{
+    G.set('#heroTitle .hl',{opacity:0,y:30});
+  }
+  const cnt={v:0};
+  const tl=G.timeline();
+  if(preChars.length){
+    tl.to(cnt,{v:100,duration:1.5,ease:'power2.inOut',onUpdate:()=>q('#preNum').textContent=Math.round(cnt.v)},0)
+      .to(preChars,{yPercent:0,duration:.8,ease:'power4.out',stagger:.035},.15)
+      .to(preChars,{yPercent:-115,duration:.5,ease:'power2.in',stagger:.02},1.9)
+      .to(pre,{yPercent:-100,duration:.8,ease:'power4.inOut'},2.15)
+      .set(pre,{display:'none'});
+  }else{
+    tl.to(cnt,{v:100,duration:1.2,ease:'power2.inOut',onUpdate:()=>q('#preNum').textContent=Math.round(cnt.v)},0)
+      .to(pre,{yPercent:-100,duration:.8,ease:'power4.inOut',delay:.3})
+      .set(pre,{display:'none'});
+  }
+  tl.to('.hero-media-wrap',{opacity:1,scale:1,duration:1.4,ease:'power3.out'},2.5)
+    .to(heroChars.length?heroChars:'#heroTitle .hl',
+      heroChars.length?{yPercent:0,duration:1.1,ease:'power4.out',stagger:.04}
+                      :{opacity:1,y:0,duration:1,ease:'power3.out',stagger:.1},2.75)
+    .to('.hero-fade',{opacity:1,y:0,duration:.8,stagger:.09,ease:'power3.out'},3.1)
+    .to('#nav',{y:0,opacity:1,duration:.7,ease:'power3.out'},3.3)
+    .add(()=>{lenis&&lenis.start();vid&&vid.play().catch(()=>{});},3.4);
+}else{
+  pre.style.display='none';
+}
+
+/* ── inicializar efectos de interacción ── */
+initSwapLinks();
+initULinks();
+initDirButtons();
+initHeadings();
+initMediaReveals();
+initLineReveals();
+initProgress();
+})();
+</script>
+</body>
+</html>
